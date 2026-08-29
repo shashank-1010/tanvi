@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+<title>I'm Sorry, Tanvi 💌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-top:#fff6f8;
+    --bg-bottom:#ffe1ec;
+    --pink:#F05A82;
+    --pink-dark:#E94F78;
+    --pink-deep:#9B2955;
+    --pink-pale:#FFE4EC;
+    --pink-line:rgba(240,90,130,0.18);
+    --ink:#3a2733;
+    --mauve:#8a7080;
+    --card:#ffffff;
+    --cream:#FFF8ED;
+    --shadow-pink: 0 10px 30px rgba(233,79,120,0.18);
+    --shadow-soft: 0 8px 24px rgba(154,60,90,0.10);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Quicksand', sans-serif;
+    background:linear-gradient(180deg,var(--bg-top) 0%, var(--bg-bottom) 100%);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+    display:flex;
+    justify-content:center;
+  }
+  .script{ font-family:'Dancing Script', cursive; }
+
+  #app{
+    width:100%;
+    max-width:480px;
+    min-height:100vh;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
+  }
+
+  /* ---------- Floating hearts ---------- */
+  #heartsLayer{
+    position:fixed;
+    inset:0;
+    max-width:480px;
+    margin:0 auto;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:1;
+  }
+  .float-heart{
+    position:absolute;
+    bottom:-40px;
+    color:var(--pink);
+    opacity:.55;
+    will-change:transform, opacity;
+    animation-name:floatUp;
+    animation-timing-function:ease-in;
+    animation-iteration-count:infinite;
+    filter:drop-shadow(0 2px 4px rgba(233,79,120,0.25));
+  }
+  @keyframes floatUp{
+    0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    10%{ opacity:.6; }
+    50%{ transform:translateY(-52vh) translateX(var(--drift,12px)) rotate(12deg); }
+    90%{ opacity:.35; }
+    100%{ transform:translateY(-108vh) translateX(calc(var(--drift,12px)*-1)) rotate(-8deg); opacity:0; }
+  }
+
+  /* ---------- Screens ---------- */
+  .screen{
+    position:relative;
+    z-index:2;
+    width:100%;
+    min-height:100vh;
+    padding:28px 22px 44px;
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    opacity:0;
+  }
+  .screen.active{
+    display:flex;
+  }
+  .screen.enter{
+    animation:screenIn .55s cubic-bezier(.22,.9,.34,1) forwards;
+  }
+  @keyframes screenIn{
+    from{ opacity:0; transform:translateY(18px) scale(.98); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  /* ---------- top message bubble ---------- */
+  .msg-bubble{
+    width:100%;
+    background:#ffffff;
+    color:#2b2b2b;
+    border-radius:16px;
+    padding:16px 18px 16px 20px;
+    position:relative;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    text-align:left;
+    font-size:14.5px;
+    line-height:1.55;
+    margin-bottom:22px;
+  }
+  .msg-bubble::before{
+    content:"";
+    position:absolute;
+    left:0; top:8px; bottom:8px;
+    width:4px;
+    border-radius:4px;
+    background:#232323;
+  }
+
+  /* ---------- generic bits ---------- */
+  .stage{
+    position:relative;
+    width:230px;
+    height:230px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:8px auto 6px;
+  }
+  .glow-circle{
+    position:absolute;
+    inset:0;
+    margin:auto;
+    width:200px;
+    height:200px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(255,182,203,0.65) 0%, rgba(255,182,203,0) 70%);
+    filter:blur(2px);
+    animation:pulseGlow 3.2s ease-in-out infinite;
+  }
+  @keyframes pulseGlow{
+    0%,100%{ transform:scale(1); opacity:.8; }
+    50%{ transform:scale(1.08); opacity:1; }
+  }
+  .illustration{ position:relative; z-index:2; font-size:96px; line-height:1; filter:drop-shadow(0 8px 14px rgba(154,60,90,0.18)); }
+  .illustration.pair{ display:flex; align-items:flex-end; gap:2px; }
+  .illustration.pair span:first-child{ transform:rotate(-6deg) translateY(4px); }
+  .illustration.pair span:last-child{ transform:rotate(6deg); }
+  .mini-heart{ position:absolute; color:var(--pink); opacity:.85; z-index:3; animation:bob 2.6s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-8px);} }
+
+  h1.title{
+    font-family:'Dancing Script', cursive;
+    font-weight:700;
+    font-size:38px;
+    color:var(--pink-deep);
+    margin:10px 0 8px;
+    line-height:1.15;
+  }
+  p.subtitle{
+    color:var(--mauve);
+    font-size:15.5px;
+    line-height:1.5;
+    max-width:320px;
+    margin:0 auto 26px;
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    border:none;
+    outline:none;
+    cursor:pointer;
+    font-family:'Quicksand', sans-serif;
+    font-weight:700;
+    font-size:16px;
+    border-radius:999px;
+    padding:16px 30px;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:active{ transform:scale(.95); }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
+    color:#fff;
+    box-shadow:var(--shadow-pink), 0 0 0 4px rgba(255,255,255,0.55) inset;
+    animation:btnPulse 2.4s ease-in-out infinite;
+  }
+  .btn-primary:hover{ transform:scale(1.04); }
+  @keyframes btnPulse{
+    0%,100%{ box-shadow:var(--shadow-pink), 0 0 0 4px rgba(255,255,255,0.55) inset; }
+    50%{ box-shadow:0 12px 34px rgba(233,79,120,0.32), 0 0 0 4px rgba(255,255,255,0.7) inset; }
+  }
+  .btn-row{
+    display:flex;
+    gap:14px;
+    width:100%;
+    max-width:320px;
+    margin-top:auto;
+    padding-top:26px;
+  }
+  .btn-outline{
+    flex:1;
+    background:#fff;
+    color:var(--pink-dark);
+    border:1.6px solid var(--pink);
+    box-shadow:var(--shadow-soft);
+  }
+  .btn-outline:hover{ transform:scale(1.03); background:var(--pink-pale); }
+  .btn-solid{
+    flex:1;
+    background:var(--pink);
+    color:#fff;
+    box-shadow:var(--shadow-pink);
+  }
+  .btn-solid:hover{ transform:scale(1.03); }
+
+  .spacer{ flex:1 1 auto; }
+
+  /* ---------- Screen 2 card ---------- */
+  .msg-card{
+    background:var(--card);
+    border-radius:22px;
+    padding:18px 22px;
+    box-shadow:var(--shadow-soft);
+    max-width:320px;
+    width:100%;
+    font-size:15.5px;
+    color:var(--ink);
+    margin:0 auto 8px;
+  }
+
+  /* ---------- Screen 3 envelope ---------- */
+  .envelope-wrap{
+    margin:18px auto 14px;
+    cursor:pointer;
+    perspective:900px;
+  }
+  .envelope{
+    position:relative;
+    width:210px;
+    height:140px;
+    transition:transform .4s ease;
+  }
+  .envelope.bump{ transform:scale(1.06); }
+  .env-body{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,#FFF9EF,#FBEAD3);
+    border:2px solid #E9C79A;
+    border-radius:10px;
+    box-shadow:0 14px 30px rgba(154,60,90,0.18);
+  }
+  .env-flap{
+    position:absolute;
+    top:-2px; left:-2px; right:-2px;
+    height:76px;
+    background:linear-gradient(160deg, #FBC1D4, #F6A9C4);
+    clip-path:polygon(0 0, 100% 0, 50% 82%);
+    border-radius:10px 10px 0 0;
+    transform-origin:top center;
+    transition:transform .7s cubic-bezier(.3,.7,.3,1);
+    box-shadow:0 4px 10px rgba(154,60,90,0.12);
+    z-index:3;
+  }
+  .envelope.open .env-flap{ transform:rotateX(178deg); }
+  .env-heart{
+    position:absolute;
+    top:52px; left:50%; transform:translateX(-50%);
+    color:var(--pink-dark);
+    font-size:26px;
+    z-index:2;
+  }
+  .env-letter{
+    position:absolute;
+    left:14px; right:14px;
+    top:30px;
+    height:96px;
+    background:#fff;
+    border-radius:6px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    z-index:1;
+    opacity:0;
+    transform:translateY(10px);
+    transition:transform .6s ease .25s, opacity .5s ease .25s;
+  }
+  .envelope.open .env-letter{
+    opacity:1;
+    transform:translateY(-46px);
+  }
+  .env-glow{
+    position:absolute;
+    inset:-30px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(255,200,220,0.7), rgba(255,200,220,0));
+    opacity:0;
+    transition:opacity .5s ease;
+    z-index:0;
+  }
+  .envelope.open .env-glow{ opacity:1; }
+
+  /* ---------- Screen 4 letter ---------- */
+  .letter-card{
+    background:var(--cream);
+    border-radius:24px;
+    padding:30px 24px 24px;
+    box-shadow:var(--shadow-soft);
+    max-width:340px;
+    width:100%;
+    margin-top:6px;
+    position:relative;
+    z-index:2;
+  }
+  .letter-salute{
+    font-family:'Dancing Script', cursive;
+    font-size:30px;
+    color:var(--pink-deep);
+    margin-bottom:14px;
+  }
+  .letter-body{
+    font-family:'Dancing Script', cursive;
+    font-size:21px;
+    line-height:1.55;
+    color:#5b4451;
+    white-space:pre-line;
+  }
+  .letter-cat{ font-size:54px; margin-top:14px; }
+
+  /* ---------- Screen 5 forgiveness meter ---------- */
+  .meter-card{
+    background:var(--card);
+    border-radius:26px;
+    padding:26px 22px 30px;
+    box-shadow:var(--shadow-soft);
+    width:100%;
+    max-width:340px;
+    margin-top:6px;
+  }
+  .meter-heading{
+    font-family:'Dancing Script', cursive;
+    font-style:italic;
+    font-weight:700;
+    color:var(--pink-deep);
+    font-size:26px;
+    margin-bottom:10px;
+  }
+  .meter-face{
+    font-size:70px;
+    margin:8px 0 14px;
+    transition:transform .3s ease;
+  }
+  .bar-track{
+    width:100%;
+    height:18px;
+    background:var(--pink-pale);
+    border-radius:999px;
+    overflow:hidden;
+    box-shadow:inset 0 1px 3px rgba(154,60,90,0.15);
+  }
+  .bar-fill{
+    height:100%;
+    width:0%;
+    border-radius:999px;
+    background:linear-gradient(90deg, var(--pink) 0%, var(--pink-dark) 100%);
+    transition:width .7s cubic-bezier(.3,.8,.3,1);
+  }
+  .bar-label{
+    margin-top:10px;
+    font-weight:700;
+    color:var(--pink-dark);
+    letter-spacing:.4px;
+    font-size:14px;
+  }
+  .tap-caption{
+    font-family:'Dancing Script', cursive;
+    font-size:22px;
+    color:var(--pink-deep);
+    margin:20px 0 16px;
+  }
+  .heart-btn-wrap{ position:relative; display:inline-block; }
+  .heart-btn{
+    width:98px; height:98px;
+    border-radius:50%;
+    border:none;
+    background:radial-gradient(circle at 35% 30%, #FF88A8, var(--pink-dark) 70%);
+    box-shadow:0 10px 26px rgba(233,79,120,0.4), 0 0 0 6px rgba(255,255,255,0.55) inset;
+    color:#fff;
+    font-size:42px;
+    cursor:pointer;
+    animation:heartPulse 1.8s ease-in-out infinite;
+    transition:transform .15s ease;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .heart-btn:active{ transform:scale(.9); }
+  @keyframes heartPulse{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.06); }
+  }
+  .burst-heart{
+    position:absolute;
+    left:50%; top:50%;
+    color:var(--pink);
+    font-size:18px;
+    pointer-events:none;
+    animation:burstOut .8s ease-out forwards;
+  }
+  @keyframes burstOut{
+    0%{ transform:translate(-50%,-50%) scale(.6); opacity:1; }
+    100%{ transform:translate(calc(-50% + var(--bx)), calc(-50% + var(--by))) scale(1.1); opacity:0; }
+  }
+  .coupon-cta{ margin-top:24px; }
+  .hidden{ display:none !important; }
+
+  /* confetti */
+  .confetti-piece{
+    position:fixed;
+    top:-20px;
+    z-index:50;
+    font-size:20px;
+    pointer-events:none;
+    animation:confettiFall linear forwards;
+  }
+  @keyframes confettiFall{
+    0%{ transform:translateY(0) rotate(0deg); opacity:1; }
+    100%{ transform:translateY(110vh) rotate(340deg); opacity:.9; }
+  }
+
+  /* ---------- Screen 6 coupons ---------- */
+  .coupons-title{
+    font-family:'Dancing Script', cursive;
+    font-size:32px;
+    color:var(--pink-deep);
+    margin:4px 0 20px;
+  }
+  .coupon-list{
+    width:100%;
+    max-width:340px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    padding-bottom:12px;
+  }
+  .coupon-card{
+    background:var(--card);
+    border-radius:24px;
+    padding:24px 20px;
+    box-shadow:var(--shadow-soft), 0 0 0 1px var(--pink-line);
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .coupon-card.show{ opacity:1; transform:translateY(0); }
+  .coupon-illustration{ font-size:56px; margin-bottom:10px; }
+  .coupon-title{
+    font-family:'Dancing Script', cursive;
+    font-weight:700;
+    font-size:24px;
+    color:var(--pink-dark);
+    margin-bottom:8px;
+  }
+  .coupon-desc{
+    color:var(--mauve);
+    font-size:14.5px;
+    line-height:1.5;
+    margin-bottom:12px;
+  }
+  .coupon-check{
+    color:#2fa35a;
+    font-weight:700;
+    font-size:13.5px;
+  }
+  .restart-btn{ margin:26px auto 4px; }
+
+  @media (min-width:481px){
+    #heartsLayer{ left:50%; transform:translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<div id="heartsLayer"></div>
+
+<div id="app">
+
+  <!-- SCREEN 1: INTRO -->
+  <section class="screen active enter" id="screen-intro">
+    <div class="msg-bubble">I'm sorryyy,i hurted you But trust Me i never
+wanted to hurt you i always wanted to care
+and see you happy I am sorry sorry sorry❤️
+🥺</div>
+
+    <div class="stage">
+      <div class="glow-circle"></div>
+      <div class="illustration">🐱</div>
+      <span class="mini-heart" style="top:-6px; left:6px; font-size:22px; animation-delay:.2s;">💗</span>
+      <span class="mini-heart" style="bottom:6px; right:0; font-size:18px; animation-delay:.6s;">💕</span>
+      <span class="mini-heart" style="top:20px; right:-4px; font-size:16px; animation-delay:1s;">💓</span>
+    </div>
+
+    <h1 class="title">I Messed Up, Tanvi 😭</h1>
+    <p class="subtitle">But I'm ready to make it right. Will you hear me
+out?</p>
+
+    <button class="btn btn-primary" onclick="goTo('screen-everything')">Listen to my Thoughts... 💝</button>
+  </section>
+
+  <!-- SCREEN 2: EVERYTHING -->
+  <section class="screen" id="screen-everything">
+    <div class="stage" style="margin-top:26px;">
+      <div class="glow-circle"></div>
+      <div class="illustration pair"><span>🐻</span><span>🐱</span></div>
+      <span class="mini-heart" style="top:-10px; left:50%; transform:translateX(-50%); font-size:24px;">💞</span>
+      <span class="mini-heart" style="bottom:0; left:4px; font-size:18px; animation-delay:.4s;">💗</span>
+      <span class="mini-heart" style="bottom:6px; right:2px; font-size:16px; animation-delay:.8s;">💕</span>
+    </div>
+
+    <h1 class="title">You Truly Matter</h1>
+
+    <div class="msg-card">I'll always be there for you.</div>
+
+    <div class="spacer"></div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="goTo('screen-intro')">← Back</button>
+      <button class="btn btn-solid" onclick="goTo('screen-envelope')">Next →</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: ENVELOPE -->
+  <section class="screen" id="screen-envelope">
+    <div class="spacer"></div>
+    <div class="envelope-wrap" id="envelopeWrap" onclick="openEnvelope()">
+      <div class="envelope" id="envelope">
+        <div class="env-glow"></div>
+        <div class="env-body"></div>
+        <div class="env-letter"></div>
+        <div class="env-flap"></div>
+        <div class="env-heart">❤️</div>
+      </div>
+    </div>
+    <div class="script" style="font-size:24px; color:var(--pink-deep); margin-top:22px;" id="envelopeCaption">CLICK TO OPEN ❤️</div>
+    <div style="margin-top:14px; font-size:22px;">
+      <span class="mini-heart" style="position:relative; margin:0 6px; display:inline-block; font-size:20px;">💗</span>
+      <span class="mini-heart" style="position:relative; margin:0 6px; display:inline-block; font-size:16px; animation-delay:.3s;">💕</span>
+      <span class="mini-heart" style="position:relative; margin:0 6px; display:inline-block; font-size:20px; animation-delay:.6s;">💓</span>
+    </div>
+    <div class="spacer"></div>
+  </section>
+
+  <!-- SCREEN 4: LETTER -->
+  <section class="screen" id="screen-letter">
+    <div class="letter-card">
+      <div class="letter-salute">To Someone Special,</div>
+      <div class="letter-body">I'm really sorry... I never meant to upset someone I truly value
+— 🥺
+
+I hope you can forgive me.</div>
+      <div class="letter-cat">🥺🐾</div>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn btn-primary" style="margin-top:24px;" onclick="goTo('screen-meter')">A Little Apology</button>
+  </section>
+
+  <!-- SCREEN 5: FORGIVENESS METER -->
+  <section class="screen" id="screen-meter">
+    <div class="meter-card">
+      <div class="meter-heading">FORGIVENESS METER ❤️</div>
+      <div class="meter-face" id="meterFace">😭</div>
+      <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+      <div class="bar-label" id="barLabel">0% FORGIVEN</div>
+
+      <div class="tap-caption">TAP TO MAKE THINGS RIGHT!</div>
+      <div class="heart-btn-wrap" id="heartBtnWrap">
+        <button class="heart-btn" id="heartBtn" onclick="tapHeart()">♥</button>
+      </div>
+
+      <div class="coupon-cta hidden" id="couponCta">
+        <button class="btn btn-primary" onclick="goTo('screen-coupons')">See Your Special Coupons</button>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </section>
+
+  <!-- SCREEN 6: LOVE COUPONS -->
+  <section class="screen" id="screen-coupons">
+    <div class="coupons-title">Your Friendship Coupons </div>
+    <div class="coupon-list" id="couponList">
+      <div class="coupon-card">
+        <div class="coupon-illustration">💐</div>
+        <div class="coupon-title">Flower Break 🌸</div>
+        <div class="coupon-desc">Valid for 1 surprise treat or a little something to make your day better.</div>
+        <div class="coupon-check">✅ Redeemable anytime</div>
+      </div>
+      <div class="coupon-card">
+        <div class="coupon-illustration">🧸</div>
+        <div class="coupon-title">Comfort Pass🧸</div>
+        <div class="coupon-desc">Valid for unlimited support, random talks & zero judgement.</div>
+        <div class="coupon-check">✅ Redeemable anytime</div>
+      </div>
+      <div class="coupon-card">
+        <div class="coupon-illustration">🍫</div>
+        <div class="coupon-title">SWEET TREAT 🍫</div>
+        <div class="coupon-desc">Valid for your favorite chocolate + one good conversation</div>
+        <div class="coupon-check">✅ Redeemable anytime</div>
+      </div>
+    </div>
+    <button class="btn btn-outline restart-btn" onclick="goTo('screen-intro')">↺ Start Over</button>
+  </section>
+
+</div>
+
+<script>
+  /* ---------------- floating hearts background ---------------- */
+  const heartsLayer = document.getElementById('heartsLayer');
+  const heartGlyphs = ['💗','💕','💓','❤️','💖'];
+  function spawnHeart(){
+    const el = document.createElement('span');
+    el.className = 'float-heart';
+    el.textContent = heartGlyphs[Math.floor(Math.random()*heartGlyphs.length)];
+    const size = 12 + Math.random()*20;
+    const left = Math.random()*100;
+    const duration = 7 + Math.random()*7;
+    const drift = (Math.random()*60 - 30) + 'px';
+    el.style.left = left + '%';
+    el.style.fontSize = size + 'px';
+    el.style.animationDuration = duration + 's';
+    el.style.setProperty('--drift', drift);
+    heartsLayer.appendChild(el);
+    setTimeout(()=> el.remove(), duration*1000 + 500);
+  }
+  setInterval(spawnHeart, 650);
+  for(let i=0;i<6;i++) setTimeout(spawnHeart, i*300);
+
+  /* ---------------- screen navigation ---------------- */
+  function goTo(id){
+    const current = document.querySelector('.screen.active');
+    const next = document.getElementById(id);
+    if(!next || current === next) return;
+    current.classList.remove('active','enter');
+    next.classList.add('active');
+    void next.offsetWidth; // reflow to restart animation
+    next.classList.add('enter');
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+
+    if(id === 'screen-coupons'){
+      revealCoupons();
+    }
+  }
+
+  /* ---------------- envelope interaction ---------------- */
+  let envelopeOpened = false;
+  function openEnvelope(){
+    if(envelopeOpened) return;
+    envelopeOpened = true;
+    const env = document.getElementById('envelope');
+    const caption = document.getElementById('envelopeCaption');
+    env.classList.add('bump');
+    if(navigator.vibrate) navigator.vibrate(15);
+    setTimeout(()=>{
+      env.classList.add('open');
+      caption.textContent = 'Opening for you...';
+    }, 180);
+    setTimeout(()=>{
+      goTo('screen-letter');
+      envelopeOpened = false;
+      env.classList.remove('open','bump');
+      caption.textContent = 'CLICK TO OPEN ❤️';
+    }, 1300);
+  }
+
+  /* ---------------- forgiveness meter ---------------- */
+  let forgiveness = 0;
+  const faces = ['😭','🥺','🙂','😊','🥰','🤩'];
+  const heartBtn = document.getElementById('heartBtn');
+  const heartWrap = document.getElementById('heartBtnWrap');
+  const barFill = document.getElementById('barFill');
+  const barLabel = document.getElementById('barLabel');
+  const meterFace = document.getElementById('meterFace');
+  const couponCta = document.getElementById('couponCta');
+
+  function tapHeart(){
+    if(forgiveness >= 100) return;
+    forgiveness = Math.min(100, forgiveness + 20);
+    barFill.style.width = forgiveness + '%';
+    barLabel.textContent = forgiveness + '% FORGIVEN';
+    meterFace.textContent = faces[forgiveness/20];
+    meterFace.style.transform = 'scale(1.25)';
+    setTimeout(()=> meterFace.style.transform = 'scale(1)', 220);
+
+    burstHearts();
+    if(navigator.vibrate) navigator.vibrate(20);
+
+    if(forgiveness >= 100){
+      heartBtn.disabled = true;
+      celebrate();
+      setTimeout(()=>{ couponCta.classList.remove('hidden'); }, 500);
+    }
+  }
+
+  function burstHearts(){
+    const glyphs = ['💗','💕','💓','✨'];
+    for(let i=0;i<7;i++){
+      const h = document.createElement('span');
+      h.className = 'burst-heart';
+      h.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+      const angle = Math.random()*Math.PI*2;
+      const dist = 50 + Math.random()*40;
+      h.style.setProperty('--bx', (Math.cos(angle)*dist) + 'px');
+      h.style.setProperty('--by', (Math.sin(angle)*dist) + 'px');
+      heartWrap.appendChild(h);
+      setTimeout(()=> h.remove(), 850);
+    }
+  }
+
+  function celebrate(){
+    const glyphs = ['💗','💕','💓','❤️','🎉','✨','💖'];
+    const layerWidth = Math.min(window.innerWidth, 480);
+    const offsetLeft = (window.innerWidth - layerWidth)/2;
+    for(let i=0;i<36;i++){
+      setTimeout(()=>{
+        const c = document.createElement('span');
+        c.className = 'confetti-piece';
+        c.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+        c.style.left = (offsetLeft + Math.random()*layerWidth) + 'px';
+        c.style.fontSize = (14 + Math.random()*16) + 'px';
+        c.style.animationDuration = (2.2 + Math.random()*1.6) + 's';
+        document.body.appendChild(c);
+        setTimeout(()=> c.remove(), 4000);
+      }, i*40);
+    }
+  }
+
+  /* ---------------- coupon reveal ---------------- */
+  function revealCoupons(){
+    const cards = document.querySelectorAll('#couponList .coupon-card');
+    cards.forEach((card, i)=>{
+      setTimeout(()=> card.classList.add('show'), 150 + i*180);
+    });
+  }
+</script>
+</body>
+</html>
