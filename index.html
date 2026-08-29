@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
-<title>I'm Sorry, Tanvi 💌</title>
+<title>I'm Sorry, Tanvi 🙏</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -489,22 +489,22 @@
   <section class="screen active enter" id="screen-intro">
     <div class="msg-bubble">I'm sorryyy,i hurted you But trust Me i never
 wanted to hurt you i always wanted to care
-and see you happy I am sorry sorry sorry❤️
+and see you happy I am sorry sorry sorry🥹
 🥺</div>
 
     <div class="stage">
       <div class="glow-circle"></div>
       <div class="illustration">🐱</div>
       <span class="mini-heart" style="top:-6px; left:6px; font-size:22px; animation-delay:.2s;">💗</span>
-      <span class="mini-heart" style="bottom:6px; right:0; font-size:18px; animation-delay:.6s;">💕</span>
-      <span class="mini-heart" style="top:20px; right:-4px; font-size:16px; animation-delay:1s;">💓</span>
+      <span class="mini-heart" style="bottom:6px; right:0; font-size:18px; animation-delay:.6s;">✨</span>
+      <span class="mini-heart" style="top:20px; right:-4px; font-size:16px; animation-delay:1s;">🤗</span>
     </div>
 
     <h1 class="title">I'm Sorry, Tanvi 😭</h1>
     <p class="subtitle">But I'm ready to make it right. Will you hear me
 out?</p>
 
-    <button class="btn btn-primary" onclick="goTo('screen-everything')">Listen to my Thoughts... 💝</button>
+    <button class="btn btn-primary" onclick="goTo('screen-everything')">Listen to my Thoughts... 🙏</button>
   </section>
 
   <!-- SCREEN 2: EVERYTHING -->
@@ -512,9 +512,9 @@ out?</p>
     <div class="stage" style="margin-top:26px;">
       <div class="glow-circle"></div>
       <div class="illustration pair"><span>🐻</span><span>🐱</span></div>
-      <span class="mini-heart" style="top:-10px; left:50%; transform:translateX(-50%); font-size:24px;">💞</span>
+      <span class="mini-heart" style="top:-10px; left:50%; transform:translateX(-50%); font-size:24px;">🤗</span>
       <span class="mini-heart" style="bottom:0; left:4px; font-size:18px; animation-delay:.4s;">💗</span>
-      <span class="mini-heart" style="bottom:6px; right:2px; font-size:16px; animation-delay:.8s;">💕</span>
+      <span class="mini-heart" style="bottom:6px; right:2px; font-size:16px; animation-delay:.8s;">✨</span>
     </div>
 
     <h1 class="title">You Truly Matter</h1>
@@ -537,14 +537,14 @@ out?</p>
         <div class="env-body"></div>
         <div class="env-letter"></div>
         <div class="env-flap"></div>
-        <div class="env-heart">❤️</div>
+        <div class="env-heart">🎀</div>
       </div>
     </div>
-    <div class="script" style="font-size:24px; color:var(--pink-deep); margin-top:22px;" id="envelopeCaption">CLICK TO OPEN ❤️</div>
+    <div class="script" style="font-size:24px; color:var(--pink-deep); margin-top:22px;" id="envelopeCaption">CLICK TO OPEN 🎀</div>
     <div style="margin-top:14px; font-size:22px;">
       <span class="mini-heart" style="position:relative; margin:0 6px; display:inline-block; font-size:20px;">💗</span>
-      <span class="mini-heart" style="position:relative; margin:0 6px; display:inline-block; font-size:16px; animation-delay:.3s;">💕</span>
-      <span class="mini-heart" style="position:relative; margin:0 6px; display:inline-block; font-size:20px; animation-delay:.6s;">💓</span>
+      <span class="mini-heart" style="position:relative; margin:0 6px; display:inline-block; font-size:16px; animation-delay:.3s;">✨</span>
+      <span class="mini-heart" style="position:relative; margin:0 6px; display:inline-block; font-size:20px; animation-delay:.6s;">🤗</span>
     </div>
     <div class="spacer"></div>
   </section>
@@ -566,7 +566,7 @@ I hope you can forgive me.</div>
   <!-- SCREEN 5: FORGIVENESS METER -->
   <section class="screen" id="screen-meter">
     <div class="meter-card">
-      <div class="meter-heading">FORGIVENESS METER ❤️</div>
+      <div class="meter-heading">FORGIVENESS METER 🎀</div>
       <div class="meter-face" id="meterFace">😭</div>
       <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
       <div class="bar-label" id="barLabel">0% FORGIVEN</div>
@@ -614,7 +614,7 @@ I hope you can forgive me.</div>
 <script>
   /* ---------------- floating hearts background ---------------- */
   const heartsLayer = document.getElementById('heartsLayer');
-  const heartGlyphs = ['💗','💕','💓','❤️','💖'];
+  const heartGlyphs = ['💗','✨','🤗','🎀','💕'];
   function spawnHeart(){
     const el = document.createElement('span');
     el.className = 'float-heart';
@@ -666,7 +666,7 @@ I hope you can forgive me.</div>
       goTo('screen-letter');
       envelopeOpened = false;
       env.classList.remove('open','bump');
-      caption.textContent = 'CLICK TO OPEN ❤️';
+      caption.textContent = 'CLICK TO OPEN 🎀';
     }, 1300);
   }
 
@@ -700,7 +700,7 @@ I hope you can forgive me.</div>
   }
 
   function burstHearts(){
-    const glyphs = ['💗','💕','💓','✨'];
+    const glyphs = ['💗','✨','🤗','🎀'];
     for(let i=0;i<7;i++){
       const h = document.createElement('span');
       h.className = 'burst-heart';
@@ -715,7 +715,7 @@ I hope you can forgive me.</div>
   }
 
   function celebrate(){
-    const glyphs = ['💗','💕','💓','❤️','🎉','✨','💖'];
+    const glyphs = ['💗','✨','🤗','🎉','🎊','🎀'];
     const layerWidth = Math.min(window.innerWidth, 480);
     const offsetLeft = (window.innerWidth - layerWidth)/2;
     for(let i=0;i<36;i++){
